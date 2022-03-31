@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class DrawThread extends  Thread {
+public class DrawThread extends Thread {
 
     Bitmap bitmap;
     MySurface mySurface;
@@ -29,23 +29,8 @@ public class DrawThread extends  Thread {
     public void run() {
         Canvas canvas;
         canvas = surfaceHolder.lockCanvas();
-        try {
-            File file = new File("map.txt");
-            Scanner in = new Scanner(file);
-            while (in.hasNext()) {
-                for (int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 5; j++) {
-                        if (in.next() =="t") {
 
-                        }
-                    }
-                }
 
-            }
-            in.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
     }
 }

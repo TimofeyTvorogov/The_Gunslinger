@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
 public class MySurface extends SurfaceView implements SurfaceHolder.Callback {
 
     int sizeTexture = 32;
-    GameMap gameMap;
+    //GameMap gameMap;
     Bitmap texture;
     Canvas canvas;
 
