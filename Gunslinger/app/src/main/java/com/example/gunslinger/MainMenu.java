@@ -3,15 +3,25 @@ package com.example.gunslinger;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class MainMenu extends AppCompatActivity {
 
     ImageButton exitButton, playButton;
+    Button noDialog_btn, yesDialog_btn;
+    private long buttonPressedTime;
+    private Toast toastToExit;
+    Dialog dialogWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,22 +31,47 @@ public class MainMenu extends AppCompatActivity {
         exitButton = findViewById(R.id.button_for_exit);
         playButton = findViewById(R.id.button_for_play);
 
-        exitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-                MainMenu.this.finish();
-                //TODO диалоговое окно для выхода (чтобы не с первого клика выходило)
-            }
-        });
+        dialogWindow = new Dialog(this);
+        dialogWindow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogWindow.setContentView(R.layout.dialog_preview);
+        dialogWindow.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogWindow.setCancelable(false);
 
-        playButton.setOnClickListener(new View.OnClickListener() {
+        noDialog_btn = dialogWindow.findViewById(R.id.dialog_window_no_button);
+        yesDialog_btn = dialogWindow.findViewById(R.id.dialog_window_yes_btn);
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainMenu.this, MainActivity.class);
-                startActivity(intent);
-                MainMenu.this.finish();
+                switch (view.getId()){
+                    case R.id.button_for_exit: dialogWindow.show(); break;
+                    case R.id.button_for_play: Intent intent = new Intent(MainMenu.this, MainActivity.class); startActivity(intent); finish(); break;
+                    case R.id.dialog_window_yes_btn: MainMenu.super.onBackPressed(); break;
+                    case R.id.dialog_window_no_button: dialogWindow.dismiss(); break;
+                }
             }
-        });
+        };
+
+        exitButton.setOnClickListener(onClickListener);
+        playButton.setOnClickListener(onClickListener);
+        noDialog_btn.setOnClickListener(onClickListener);
+        yesDialog_btn.setOnClickListener(onClickListener);
+
+        Window window = getWindow();
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (buttonPressedTime + 2000 > System.currentTimeMillis()){
+            toastToExit.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            toastToExit = Toast.makeText(getBaseContext(), "Нажмите еще раз, чтобы выйти.", Toast.LENGTH_SHORT);
+            toastToExit.show();
+        }
+        buttonPressedTime = System.currentTimeMillis();
     }
 }

@@ -17,12 +17,15 @@ public class GameMap {
     Bitmap texture;
     SurfaceHolder surfaceHolder;
 
+
+
     public GameMap(Resources resources) {
         texture = BitmapFactory.decodeResource(resources, R.drawable.block);
     }
 
     public void draw(Canvas canvas){
         canvas = surfaceHolder.lockCanvas();
+
         canvas.drawBitmap(texture, 100, 100, null);
         surfaceHolder.unlockCanvasAndPost(canvas);
     }
