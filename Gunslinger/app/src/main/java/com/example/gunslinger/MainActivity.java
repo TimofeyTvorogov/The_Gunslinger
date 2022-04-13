@@ -22,16 +22,14 @@ import java.io.InputStreamReader;
 
 
 public class MainActivity extends AppCompatActivity {
-   TextView tV;
-   Button butt;
+
 
 
 @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new DrawMap(getResources(),this));
-    butt = findViewById(R.id.butt);
-    tV = findViewById(R.id.tV);
+        setContentView(new GameMap(this));
+
 
 
     Window window = getWindow();

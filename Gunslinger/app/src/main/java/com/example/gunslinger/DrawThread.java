@@ -1,24 +1,21 @@
 package com.example.gunslinger;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
 public class DrawThread extends Thread {
-
-    Bitmap bitmap;
-    MySurface mySurface;
+    GameMap gameMap;
     SurfaceHolder surfaceHolder;
     boolean isRun = false;
+    long nowTime, prevTime, ellapsedTime;
 
-    public DrawThread(MySurface mySurface, SurfaceHolder surfaceHolder) {
-        this.mySurface = mySurface;
+    public DrawThread(GameMap gameMap, SurfaceHolder surfaceHolder) {
+        this.gameMap = gameMap;
         this.surfaceHolder = surfaceHolder;
+        prevTime = System.currentTimeMillis();
+
+        Log.d("COORDS", "DRAW started!");
     }
 
     public void setRun(boolean run) {
@@ -28,9 +25,23 @@ public class DrawThread extends Thread {
     @Override
     public void run() {
         Canvas canvas;
-        canvas = surfaceHolder.lockCanvas();
-
-
-
+        while (isRun){
+            if (!surfaceHolder.getSurface().isValid()){
+                continue;
+            }
+            canvas = null;
+            nowTime = System.currentTimeMillis();
+            ellapsedTime = nowTime - prevTime;
+            if (ellapsedTime > 30){
+                prevTime = nowTime;
+                canvas = surfaceHolder.lockCanvas(null);
+                synchronized (surfaceHolder){
+                    gameMap.draw(canvas);
+                }
+                if (canvas != null){
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                }
+            }
+        }
     }
 }
