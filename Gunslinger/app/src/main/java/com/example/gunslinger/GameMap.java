@@ -30,8 +30,7 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
         res = getResources();
         drawMap = new DrawMap(res);
         roland = new Roland(BitmapFactory.decodeResource(res,R.drawable.roland_single),
-                this,
-                drawMap.spawnX,drawMap.spawnY);
+                this, drawMap.spawnX,drawMap.spawnY);
 
 
 
@@ -69,7 +68,7 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
         drawThread = new DrawThread(this, getHolder());
         drawThread.setRun(true);
         drawThread.start();
-        roland.spawn(drawMap);
+
     }
 
     @Override

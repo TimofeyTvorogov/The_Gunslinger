@@ -29,10 +29,7 @@ public class Roland {
         //width = this.image.getWidth() / IMAGE_COLUMNS;
         //height = this.image.getHeight() / IMAGE_ROWS;
     }
-    public void spawn(DrawMap drawMap) {
-        x = drawMap.spawnX;
-        y = drawMap.spawnY;
-    }
+
 
 
 
