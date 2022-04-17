@@ -8,22 +8,25 @@ import android.graphics.Canvas;
 
 
 import android.graphics.Color;
+import android.graphics.Paint;
 
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
+import java.util.Random;
 
 
 public class DrawMap {
 Resources resources;
-Bitmap cobbleStone, brick, water;
+Bitmap innerBrick, upBrick, downBrick;
 String[][] mapArray;
-//ArrayList<Bitmap> textureArrayList;
+
 int textureWidth, textureHeight;
-boolean generatedFirst = false;
+boolean generatedFirst = true;
+int spawnX, spawnY;
+Paint paint = new Paint();
 
 
 
@@ -32,11 +35,11 @@ boolean generatedFirst = false;
 
 public DrawMap(Resources resources) {
     this.resources = resources;
-    cobbleStone = BitmapFactory.decodeResource(resources, R.drawable.block);
-    brick = BitmapFactory.decodeResource(resources, R.drawable.brick);
-    water = BitmapFactory.decodeResource(resources, R.drawable.water);
-    textureHeight = cobbleStone.getHeight();
-    textureWidth = cobbleStone.getWidth();
+    innerBrick = BitmapFactory.decodeResource(resources, R.drawable.inner_brick_16);
+    upBrick = BitmapFactory.decodeResource(resources, R.drawable.up_brick_16);
+    downBrick = BitmapFactory.decodeResource(resources, R.drawable.down_brick_16);
+    textureHeight = innerBrick.getHeight();
+    textureWidth = innerBrick.getWidth();
 
 
 
@@ -83,16 +86,18 @@ public DrawMap(Resources resources) {
     }
 
     public void drawTextures(Canvas canvas) {
-    if (generatedFirst == false){
+    if (generatedFirst){
         mapArray = generateMapArray(canvas);
-        generatedFirst = true;
+        generatedFirst = false;
     }
         for (int y = 0; y < mapArray.length; y++) {
             for (int x = 0; x < mapArray[y].length; x++) {
                 switch (mapArray[y][x]){
-                    case "t" : canvas.drawBitmap(cobbleStone,x*textureWidth,y*textureHeight, null);break;
-                    case "b" : canvas.drawBitmap(brick,x*textureWidth,y*textureHeight, null);break;
-                    case "w" : canvas.drawBitmap(water,x*textureWidth,y*textureHeight, null);break;
+                    case "i" : canvas.drawBitmap(innerBrick,x*textureWidth,y*textureHeight, null);break;
+                    case "u" : canvas.drawBitmap(upBrick,x*textureWidth,y*textureHeight, paint);break;
+                    case "d" : canvas.drawBitmap(downBrick,x*textureWidth,y*textureHeight, paint);break;
+                    case "|" : spawnX = x*textureWidth+(new Random().nextInt( 1)); spawnY = y*textureHeight;break;
+
                 }
 
 

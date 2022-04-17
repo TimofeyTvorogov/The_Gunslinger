@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(new GameMap(this));

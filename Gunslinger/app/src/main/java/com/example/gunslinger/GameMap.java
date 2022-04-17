@@ -3,6 +3,7 @@ package com.example.gunslinger;
 import android.content.Context;
 import android.content.res.Resources;
 
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 import android.view.MotionEvent;
@@ -18,16 +19,19 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
     float touchX, touchY; //точки касания
 
     Resources res;
-    DrawMap drawMap = new DrawMap(getResources());
+    DrawMap drawMap;
     DrawThread drawThread;
 
-    ArrayList<Sprites> spritesArray = new ArrayList<>();
+    Roland roland;
 
     public GameMap(Context context) {
         super(context);
         getHolder().addCallback(this);
         res = getResources();
-
+        drawMap = new DrawMap(res);
+        roland = new Roland(BitmapFactory.decodeResource(res,R.drawable.roland_single),
+                this,
+                drawMap.spawnX,drawMap.spawnY);
 
 
 
@@ -50,6 +54,10 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         super.draw(canvas);
         drawMap.draw(canvas);
+        roland.draw(canvas);
+        roland.moveTo(touchX);
+
+
 
     }
 
@@ -61,6 +69,7 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
         drawThread = new DrawThread(this, getHolder());
         drawThread.setRun(true);
         drawThread.start();
+        roland.spawn(drawMap);
     }
 
     @Override
