@@ -22,6 +22,7 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
     DrawMap drawMap;
     DrawThread drawThread;
 
+    boolean isSpawned = false;
     Roland roland;
 
     public GameMap(Context context) {
@@ -29,11 +30,8 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
         res = getResources();
         drawMap = new DrawMap(res);
-        roland = new Roland(BitmapFactory.decodeResource(res,R.drawable.roland_single),
-                this, drawMap.spawnX,drawMap.spawnY);
-
-
-
+        roland = new Roland(BitmapFactory.decodeResource(res,R.drawable.roland_single_32),
+                this, 0,0);
 
     }
 
@@ -44,24 +42,22 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
             touchY = event.getY();
         }
 
-
         return true;
     }
-
 
     @Override
     public void draw(Canvas canvas){
         super.draw(canvas);
         drawMap.draw(canvas);
+        if (isSpawned == false) {
+            roland.setX(drawMap.spawnX);
+            roland.setY(drawMap.spawnY);
+            isSpawned = true;
+        }
         roland.draw(canvas);
         roland.moveTo(touchX);
 
-
-
     }
-
-
-
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -90,4 +86,3 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 }
-
