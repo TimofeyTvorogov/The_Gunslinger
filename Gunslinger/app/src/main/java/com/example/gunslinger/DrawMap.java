@@ -52,19 +52,20 @@ public class DrawMap {
         }
 
     }
-
+//рассчитывает длину и высоту массива перед выделением памяти
     private void checkLength() throws IOException {
         int rowCounter = 0;
-        int columnCounter;
+        int columnCounter = 0;
+        boolean hasTaken = false;
 
         while ((info = br.readLine()) != null) {
+           //чтобы забрать кол-во колонок лишь один раз
+            if (!hasTaken) {
+                columnCounter = info.length();
+                hasTaken = true;
+            }
             rowCounter++;
         }
-        br.close();
-        path = resources.openRawResource(R.raw.map_true);
-        isr = new InputStreamReader(path);
-        br = new BufferedReader(isr);
-        columnCounter = br.readLine().length();
         br.close();
 
         mapArray = new String[rowCounter][columnCounter];
@@ -102,7 +103,7 @@ public class DrawMap {
                     case "i" : canvas.drawBitmap(innerBrick,x*textureWidth,y*textureHeight, null);break;
                     case "u" : canvas.drawBitmap(upBrick,x*textureWidth,y*textureHeight, paint);break;
                     case "d" : canvas.drawBitmap(downBrick,x*textureWidth,y*textureHeight, paint);break;
-                    case "|" : spawnX = x*textureWidth; spawnY = y*textureHeight-48;break;
+                    case "|" : spawnX = x*textureWidth; spawnY = y*textureHeight-46;break;
 
                 }
 

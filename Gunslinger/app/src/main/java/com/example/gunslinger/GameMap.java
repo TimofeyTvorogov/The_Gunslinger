@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,10 +15,10 @@ import java.util.ArrayList;
 
 public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
     //Переменные для рисования
-    float x1, y1; //текущее положение картинки
-    float x2, y2; //смещение координат
-    float touchX, touchY; //точки касания
-
+    float x1, y1, //текущее положение картинки
+     x2, y2,        //смещение координат
+     touchX, touchY; //точки касания
+int row,column;
     Resources res;
     DrawMap drawMap;
     DrawThread drawThread;
@@ -40,10 +41,20 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
         if (event.getAction() == MotionEvent.ACTION_DOWN){
             touchX = event.getX();
             touchY = event.getY();
+            roland.settX(touchX);
+
         }
 
         return true;
     }
+    public void checkCoords(){
+        row = Math.round((roland.y+roland.height)/48)-1;
+        column = Math.round(roland.x/48);
+        if (drawMap.mapArray[row][column].equals("e")) {
+            Log.d("letter definition", "Roland is standing on e");
+        }
+    }
+
 
     @Override
     public void draw(Canvas canvas){
@@ -54,10 +65,13 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
             roland.setY(drawMap.spawnY);
             isSpawned = true;
         }
+        //checkCoords(); (перед или после)
         roland.draw(canvas);
-        roland.moveTo(touchX);
+        checkCoords();
+
 
     }
+
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {

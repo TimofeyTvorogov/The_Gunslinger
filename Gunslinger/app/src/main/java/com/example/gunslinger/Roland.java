@@ -9,8 +9,10 @@ public class Roland {
     GameMap gameMap;
     Bitmap image; //спрайты
     int x, y; //координаты кадра
-    float speedX = 5,
-            speedY = 5; //скорость перемещения
+    int dx,dy;
+    int tX,tY;
+    float speedX = 5, speedY = 5; //скорость перемещения
+
 
     int height, width; //ширина и высота кадра
     Paint paint = new Paint();
@@ -18,18 +20,38 @@ public class Roland {
     final int IMAGE_COLUMNS = 8;
     int currentFrame = 0;
     int direction = 4;
+    boolean dir;
+
 
     public Roland(Bitmap image, GameMap gameMap, int startX, int startY){
         this.gameMap = gameMap;
         this.image = image;
+        width = image.getWidth();
+        height = image.getHeight();
         x = startX;
         y = startY;
 //width = this.image.getWidth() / IMAGE_COLUMNS;
 //height = this.image.getHeight() / IMAGE_ROWS;
     }
+    public void settX(float touchX) {
+        tX = (int) touchX;
+       dx = 7;
+    }
 
-    public void moveTo(float touchX){
-        x = (int) touchX;
+    public void moveTo(){
+        if (tX>x){
+            if (Math.abs(x - tX)-width> 5) {
+                x += dx;
+            }
+        }
+        else if (tX<x){
+             if (Math.abs(x - tX)> 5) {
+                x -= dx;
+            }
+        }
+
+        else dx = 0;
+
 //было здесь
 //currentFrame = ++currentFrame%IMAGE_COLUMNS;
     }
@@ -42,6 +64,7 @@ public class Roland {
 //canvas.drawBitmap(image, src, dst, paint);
 //currentFrame = ++currentFrame%IMAGE_COLUMNS;
         canvas.drawBitmap(image,x,y,paint);
+        moveTo();
     }
 
     public void setX(int x){
