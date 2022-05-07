@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-
 public class DrawMap {
     Resources resources;
     Bitmap innerBrick, upBrick, downBrick;
@@ -23,7 +22,6 @@ public class DrawMap {
     boolean generatedFirst = true;
     int spawnX, spawnY;
     Paint paint = new Paint();
-
 
     //переменные для работы с файлами
     InputStream path;
@@ -52,14 +50,14 @@ public class DrawMap {
         }
 
     }
-//рассчитывает длину и высоту массива перед выделением памяти
+    //рассчитывает длину и высоту массива перед выделением памяти
     private void checkLength() throws IOException {
         int rowCounter = 0;
         int columnCounter = 0;
         boolean hasTaken = false;
 
         while ((info = br.readLine()) != null) {
-           //чтобы забрать кол-во колонок лишь один раз
+//чтобы забрать кол-во колонок лишь один раз
             if (!hasTaken) {
                 columnCounter = info.length();
                 hasTaken = true;
@@ -89,7 +87,6 @@ public class DrawMap {
 
     }
 
-
     public void draw(Canvas canvas) {
 //рисуем задний фон
         canvas.drawColor(Color.DKGRAY);
@@ -103,7 +100,7 @@ public class DrawMap {
                     case "i" : canvas.drawBitmap(innerBrick,x*textureWidth,y*textureHeight, null);break;
                     case "u" : canvas.drawBitmap(upBrick,x*textureWidth,y*textureHeight, paint);break;
                     case "d" : canvas.drawBitmap(downBrick,x*textureWidth,y*textureHeight, paint);break;
-                    case "|" : spawnX = x*textureWidth; spawnY = y*textureHeight-46;break;
+                    case "|" : spawnX = x*textureWidth; spawnY = y*textureHeight-48;break;
 
                 }
 
