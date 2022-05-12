@@ -3,11 +3,10 @@ package com.example.gunslinger;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 
-
-public class Roland {
-    GameMap gameMap;
+public class Roland  {
     Bitmap image; //спрайты
     Paint paint = new Paint();
 
@@ -16,32 +15,33 @@ public class Roland {
     int currentFrame = 0;
     int direction = 4;
 
-    //переменные для передвижения
+    //переменные для передвижения и взаимодействия
     int x, y; //координаты кадра
-    int dx;
-    int tX;
+    int moveVelocity;
+    int targetX;
     boolean jumping = false;
     boolean falling = false;
     int height, width; //ширина и высота персонажа
     int fallVelocity = 8;
     int jumpVelocity = 6;
-    int jumpBorder; //высота прыжка
+    int jumpBorder = 72; // высота прыжка (потолок прыжка)
     int jumpCounter = 0; //счетчик текущей высоты прыжка
+    Rect hitbox;
 
-    public Roland(Bitmap image, GameMap gameMap, int startX, int startY){
-        this.gameMap = gameMap;
+    public Roland(Bitmap image){
         this.image = image;
         width = image.getWidth();
         height = image.getHeight();
-        x = startX;
-        y = startY;
-        jumpBorder = 48;
+        x = 0;
+        y = 0;
+        hitbox = new Rect(x+24,y+9,width-30,height-3);
+
 //width = this.image.getWidth() / IMAGE_COLUMNS;
 //height = this.image.getHeight() / IMAGE_ROWS;
     }
-    public void settX(float touchX) {
-        tX = (int) touchX;
-        dx = 7;
+    public void setTargetX(float touchX) {
+        targetX = (int) touchX;
+        moveVelocity = 7;
 
     }
     public void jump(){
@@ -68,19 +68,19 @@ public class Roland {
         }
     }
 
-    public void moveToX(){
-        if (tX>x){
-            if (Math.abs(x - tX)-width> 5) {
-                x += dx;
+    public void moveX(){
+        if (targetX >x){
+            if (Math.abs(x - targetX)-width> 5) {
+                x += moveVelocity;
             }
         }
-        else if (tX<x){
-            if (Math.abs(x - tX)> 5) {
-                x -= dx;
+        else if (targetX <x){
+            if (Math.abs(x - targetX)> 5) {
+                x -= moveVelocity;
             }
         }
 
-        else dx = 0;
+        else moveVelocity = 0;
 
 //было здесь
 //currentFrame = ++currentFrame%IMAGE_COLUMNS;
@@ -94,10 +94,12 @@ public class Roland {
 //canvas.drawBitmap(image, src, dst, paint);
 //currentFrame = ++currentFrame%IMAGE_COLUMNS;
         canvas.drawBitmap(image,x,y,paint);
-        moveToX();
+        moveX();
         jump();
         fall();
-//fallInPit();
+        hitbox.set(x+24,y+9,width-30,height-3);
+
+
     }
 
     public void setX(int x){

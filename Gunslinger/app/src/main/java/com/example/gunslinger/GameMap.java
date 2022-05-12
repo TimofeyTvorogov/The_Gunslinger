@@ -15,12 +15,13 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
     float x1, y1, //текущее положение картинки
         // x2, y2, //смещение координат
             touchX, touchY; //точки касания
-    int row,column;
+    int rolRow,rolColumn,crateRow,crateColumn;
     Resources res;
     DrawMap drawMap;
     DrawThread drawThread;
     boolean isSpawned = false;
     Roland roland;
+    Crate crate;
 
 
     public GameMap(Context context) {
@@ -28,8 +29,8 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
         res = getResources();
         drawMap = new DrawMap(res);
-        roland = new Roland(BitmapFactory.decodeResource(res,R.drawable.roland_single_32),
-                this, 0,0);
+        roland = new Roland(BitmapFactory.decodeResource(res,R.drawable.roland_single_32));
+       crate = new Crate(BitmapFactory.decodeResource(res,R.drawable.crate_32));
 
     }
 
@@ -39,10 +40,12 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
             case MotionEvent.ACTION_DOWN:
                 touchX = event.getX();
                 touchY = event.getY();
-                roland.settX(touchX); break;
+                roland.setTargetX(touchX); break;
             case MotionEvent.ACTION_UP:
-                if (!roland.falling) {roland.jumping = true;
-                roland.jumpCounter = 0;}
+                if (!roland.falling){
+                roland.jumping = true;
+                roland.jumpCounter = 0;
+                }
                 break;
 
         }
@@ -50,29 +53,45 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
     public void checkFalling(){
-        row = Math.round((roland.y+roland.height)/48);
-        column = Math.round(roland.x/48);
-        if (drawMap.mapArray[row][column].equals("e")||drawMap.mapArray[row][column].equals("|"))
-            roland.falling = true;
+                //row = Math.round((roland.y + roland.height) / 48);
+        rolRow = Math.round((roland.hitbox.top + roland.hitbox.bottom) / 48);
+        //if (roland.tX>roland.x)
+                //column = Math.round(roland.x/48);
+        rolColumn = Math.round(roland.hitbox.left/48);
+        //else column = Math.round(roland.width/48);
+        crateRow = Math.round((crate.hitbox.top + crate.hitbox.bottom) / 48);
+        crateColumn = Math.round(crate.hitbox.left/48);
+        if (drawMap.mapArray[rolRow][rolColumn].equals("e")||drawMap.mapArray[rolRow][rolColumn].equals("|")||drawMap.mapArray[rolRow][rolColumn].equals("c"))
+         roland.falling = true;
         else roland.falling = false;
+        if (drawMap.mapArray[crateRow][crateColumn].equals("e")||drawMap.mapArray[crateRow][crateColumn].equals("|")||drawMap.mapArray[crateRow][crateColumn].equals("c"))
+            crate.falling =  true;
+        else crate.falling = false;
+
 
     }
+
 
     @Override
     public void draw(Canvas canvas){
         super.draw(canvas);
         drawMap.draw(canvas);
         if (!isSpawned) {
-            roland.setX(drawMap.spawnX);
-            roland.setY(drawMap.spawnY);
+            roland.setX(drawMap.spawnRX);
+            roland.setY(drawMap.spawnRY);
+            crate.setX(drawMap.spawnCX);
+            crate.setY(drawMap.spawnRY);
             isSpawned = true;
         }
         roland.draw(canvas);
+        crate.draw(canvas);
         checkFalling();
 
 
-//Rect rectRoland = new Rect(roland.x + 5, roland.y + 5, roland.width - 5, roland.height);
-
+        //Log.d("rol cord", String.format("%d, %d, %d, %d",roland.x
+        //,roland.y, roland.width, roland.height));
+        //Log.d("hitbox cord", String.format("%d, %d, %d, %d",roland.hitbox.left
+        //,roland.hitbox.top, roland.hitbox.right, roland.hitbox.bottom));
 
     }
 

@@ -20,7 +20,8 @@ public class DrawMap {
 
     int textureWidth, textureHeight;
     boolean generatedFirst = true;
-    int spawnX, spawnY;
+    int spawnRX, spawnRY;
+    int spawnCX, spawnCY;
     Paint paint = new Paint();
 
     //переменные для работы с файлами
@@ -100,7 +101,8 @@ public class DrawMap {
                     case "i" : canvas.drawBitmap(innerBrick,x*textureWidth,y*textureHeight, null);break;
                     case "u" : canvas.drawBitmap(upBrick,x*textureWidth,y*textureHeight, paint);break;
                     case "d" : canvas.drawBitmap(downBrick,x*textureWidth,y*textureHeight, paint);break;
-                    case "|" : spawnX = x*textureWidth; spawnY = y*textureHeight-48;break;
+                    case "|" :spawnRX = x*textureWidth; spawnRY = y*textureHeight-48;break;
+                    case "c" : spawnCX = x*textureWidth; spawnCY = y*textureHeight-48;break;
 
                 }
 
