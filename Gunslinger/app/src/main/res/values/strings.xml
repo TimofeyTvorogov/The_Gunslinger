@@ -4,4 +4,5 @@
     <string name="text_dialog_window">Are you sure you want to exit?</string>
     <string name="dialog_yes_button">Yes</string>
     <string name="dialog_no_button">No</string>
+    <string name="leverListHead">Select level</string>
 </resources>

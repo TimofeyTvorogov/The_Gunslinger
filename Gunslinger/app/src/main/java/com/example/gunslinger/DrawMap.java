@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.io.BufferedReader;
@@ -14,7 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class DrawMap {
-    Resources resources;
+    Resources res;
     Bitmap innerBrick, upBrick, downBrick;
     String[][] mapArray;
 
@@ -31,13 +30,13 @@ public class DrawMap {
     String info;
 
     public DrawMap(Resources resources) {
-        this.resources = resources;
+        this.res = resources;
         innerBrick = BitmapFactory.decodeResource(resources, R.drawable.inner_brick_16);
         upBrick = BitmapFactory.decodeResource(resources, R.drawable.up_brick_16);
         downBrick = BitmapFactory.decodeResource(resources, R.drawable.down_brick_16);
         textureHeight = innerBrick.getHeight();
         textureWidth = innerBrick.getWidth();
-        path = resources.openRawResource(R.raw.map_true);
+        path = resources.openRawResource(R.raw.test_map_23_49);
         isr = new InputStreamReader(path);
         br = new BufferedReader(isr);
         if (generatedFirst) {
@@ -73,7 +72,7 @@ public class DrawMap {
     //генерирует строковый массив из файла
     public void generateMapArray() throws IOException {
         checkLength();
-        path = resources.openRawResource(R.raw.map_true);
+        path = res.openRawResource(R.raw.test_map_23_49);
         isr = new InputStreamReader(path);
         br = new BufferedReader(isr);
 
@@ -90,7 +89,7 @@ public class DrawMap {
 
     public void draw(Canvas canvas) {
 //рисуем задний фон
-        canvas.drawColor(Color.DKGRAY);
+        canvas.drawBitmap(BitmapFactory.decodeResource(res,R.drawable.level_bg),0,0,paint);
         drawTextures(canvas);
     }
 

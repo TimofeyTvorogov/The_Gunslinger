@@ -1,28 +1,27 @@
 package com.example.gunslinger;
-
-import android.graphics.Bitmap;
-import android.graphics.Paint;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 
-public class Spike {
-    int x, y; //координаты кадра
-    Rect hitBox;
-    GameMap gameMap;
 
+public class Spike extends GameObject   {
 
-    Bitmap image; //спрайты
-    Paint paint = new Paint();
-    public Spike(Bitmap image, GameMap gameMap, int startX, int startY){
-        this.gameMap = gameMap;
-        this.image = image;
-        x = startX;
-        y = startY;
-        hitBox = new Rect(x+5,y+5,image.getWidth()-5,image.getHeight());
+    Roland roland;
+
+    public Spike(DrawMap drawMap, Resources res, int x, int y, Roland roland){
+        super(drawMap,res,x,y);
+        this.roland = roland;
+        image = BitmapFactory.decodeResource(res, R.drawable.spike_16);
+        hitbox = new Rect(x+15,y+12,width-15,height-9);
 
     }
+    @Override
+    public void draw(Canvas canvas) {
+        canvas.drawBitmap(image,x,y, paint);
+        hitbox.set(x+15,y+12,width-15,height-9);
 
-  //public boolean checkCollision(Roland roland) {
-  //    if () {
-  //    }
-  //}
+    }
+    //TODO как реализовывать смерть
+
 }

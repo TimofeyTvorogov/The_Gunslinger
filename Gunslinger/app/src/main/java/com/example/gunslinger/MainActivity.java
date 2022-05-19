@@ -23,36 +23,50 @@ import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    AudioPlayer audioPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(new GameMap(this));
 
+        Window window = getWindow();
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        audioPlayer = new AudioPlayer(this, 2);
+        audioPlayer.play();
 
-    Window window = getWindow();
-    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
-
-
-}
-
-
-
-
+    }
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(MainActivity.this, MainMenu.class);
         startActivity(intent);
         finish();
-}
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        audioPlayer.stop();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        audioPlayer.stop();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        audioPlayer.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        audioPlayer.play();
+    }
 
 }

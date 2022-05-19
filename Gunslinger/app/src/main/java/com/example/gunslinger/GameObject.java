@@ -1,37 +1,54 @@
 package com.example.gunslinger;
-
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-
 public abstract class GameObject {
     //переменные для рисования
     Bitmap image;
     Paint paint = new Paint();
+    DrawMap drawMap;
+    Resources res;
 
     //переменные для передвижения и взаимодействия
     Rect hitbox;
-    boolean collision = false;
-    boolean falling = false;
-    int fallVelocity = 8;
-    int moveVelocity;
-    int x, y, //координаты кадра
-    height, width; //ширина и высота объекта
+    int fallingVelocity = 8,
+    movingVelocity,
+    x, y, //координаты кадра
+    height, width, //ширина и высота объекта
+    row,column;
 
 
-    public GameObject(Bitmap image){
-        this.image = image;
+    public GameObject(DrawMap drawMap, Resources res, int x, int y){
+        this.drawMap = drawMap;
+        this.x = x;
+        this.y = y;
+        this.res = res;
         width = image.getWidth();
         height = image.getHeight();
-        x = 0;
-        y = 0;
-    }
-    //todo написать коллизию
 
+    }
+
+
+
+    public boolean isFalling(){
+        if(drawMap.mapArray[row][column].equals("e")||
+           drawMap.mapArray[row][column].equals("|")||
+           //drawMap.mapArray[row][column].equals("s")||
+           drawMap.mapArray[row][column].equals("l")||
+           drawMap.mapArray[row][column].equals("c"))
+            return true;
+
+        else return false;
+    }
+    public boolean isCollision(Rect foreignHitbox){return foreignHitbox.contains(hitbox);}
+
+//не лезь сюда, тут всё ок
     public abstract void draw(Canvas canvas);
-    public abstract void fall();
-    public abstract void moveX();
+    public void fall(){};
+    public void moveX(){};
     public void setX(int x){
         this.x = x;
     }
