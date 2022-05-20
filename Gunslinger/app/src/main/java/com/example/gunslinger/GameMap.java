@@ -27,12 +27,14 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
         drawMap = new DrawMap(res);
         for(Map.Entry<String, Pair<Integer, Integer>> entry: drawMap.coordInform.entrySet()){
             switch (entry.getKey()){
+                //todo роланд почему-то null
                 case "Roland": roland = new Roland(drawMap,res, entry.getValue().first*48,entry.getValue().second*48);break;
                 case "Lever": listOfLevers.add(new Lever(drawMap,res,entry.getValue().first*48,entry.getValue().second*48,roland)); break;
                 case "Spike": break;
                 case "Crate": listOfCrates.add(new Crate(drawMap,res,entry.getValue().first*48,entry.getValue().second*48,roland)); break;
             }
         }
+        roland = new Roland(drawMap,res,10*48,11*48);
     }
     @Override
     public boolean onTouchEvent(MotionEvent event){

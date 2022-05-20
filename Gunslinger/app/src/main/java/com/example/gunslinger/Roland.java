@@ -21,9 +21,11 @@ public class Roland extends GameObject  {
     public Roland(DrawMap drawMap, Resources res, int x, int y){
         super(drawMap,res,x,y);
         image = BitmapFactory.decodeResource(res, R.drawable.roland_single_32);
+        width = image.getWidth();
+        height = image.getHeight();
         hitbox = new Rect(x+24,y+9,width-30,height);
-        row = Math.round(hitbox.bottom/48);
-        column = Math.round((hitbox.left+(hitbox.right-hitbox.left)/2)/48);
+        row = hitbox.bottom/48;
+        column = (hitbox.left+(hitbox.right-hitbox.left)/2)/48;
 //width = this.image.getWidth() / IMAGE_COLUMNS;
 //height = this.image.getHeight() / IMAGE_ROWS;
     }
@@ -68,6 +70,12 @@ public class Roland extends GameObject  {
 //было здесь
 //currentFrame = ++currentFrame%IMAGE_COLUMNS;
     }
+
+    @Override
+    public boolean isFalling() {
+        return super.isFalling();
+    }
+
     @Override
     public void draw(Canvas canvas) {
 //Rect src = new Rect(currentFrame*width, direction*height,
@@ -77,12 +85,19 @@ public class Roland extends GameObject  {
 //currentFrame = ++currentFrame%IMAGE_COLUMNS;
         canvas.drawBitmap(image,x,y,paint);
         moveX();
-        jump();
+        //todo сломался прыжок и падение
+        //jump();
         fall();
         hitbox.set(x+24,y+9,width-30,height);
-        row = Math.round(hitbox.bottom/48);
-        column = Math.round((hitbox.left+(hitbox.right-hitbox.left)/2)/48);
+        row = hitbox.bottom/48;
+        column =(hitbox.left+(hitbox.right-hitbox.left)/2)/48;
 
+    }
+    //в игровой карте отдельно
+    public void checkDeath(Spike spike){
+        if (isCollision(spike.hitbox)) {
+            isDead = true;
+        }
     }
 }
 //TODO спрайтовая анимация или две картинки (если нет времени)

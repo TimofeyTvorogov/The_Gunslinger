@@ -26,8 +26,9 @@ public abstract class GameObject {
         this.x = x;
         this.y = y;
         this.res = res;
-        width = image.getWidth();
-        height = image.getHeight();
+        //todo получение ширины и длины в абстрактном классе приводит к вылету
+      // width = image.getWidth();
+      // height = image.getHeight();
 
     }
 
@@ -47,13 +48,8 @@ public abstract class GameObject {
 
 //не лезь сюда, тут всё ок
     public abstract void draw(Canvas canvas);
-    public void fall(){};
-    public void moveX(){};
-    public void setX(int x){
-        this.x = x;
-    }
-    public void setY(int y){
-        this.y = y;
-    }
+    public void fall(){}
+    public void moveX(){}
+
 
 }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.gunslinger">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,21 +13,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gunslinger"
         tools:ignore="ExtraText">
-
+        <activity
+            android:name=".LevelListActivity"
+            android:exported="true"
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".MainMenu"
             android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-//TODO не забывать добавлять ориентацию в каждую активность
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>
