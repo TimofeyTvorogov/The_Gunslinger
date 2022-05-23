@@ -1,7 +1,6 @@
 package com.example.gunslinger;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -9,43 +8,50 @@ public abstract class GameObject {
     //переменные для рисования
     Bitmap image;
     Paint paint = new Paint();
-    DrawMap drawMap;
+    GameMap gameMap;
     Resources res;
 
     //переменные для передвижения и взаимодействия
     Rect hitbox;
-    int fallingVelocity = 8,
+    int fallingVelocity = 12,
     movingVelocity,
     x, y, //координаты кадра
     height, width, //ширина и высота объекта
-    row,column;
+     fallRow, fallColumn,horColRow,horColColumn;
 
 
-    public GameObject(DrawMap drawMap, Resources res, int x, int y){
-        this.drawMap = drawMap;
+    public GameObject(GameMap gameMap, Resources res, int x, int y){
+        this.gameMap = gameMap;
         this.x = x;
         this.y = y;
         this.res = res;
-        //todo получение ширины и длины в абстрактном классе приводит к вылету
-      // width = image.getWidth();
-      // height = image.getHeight();
 
     }
 
 
+public boolean isHorizontalCollision(){
+  return gameMap.drawMap.mapArray[horColRow][horColColumn].equals("i")||
+         gameMap.drawMap.mapArray[horColRow][horColColumn].equals("d")||
+         gameMap.drawMap.mapArray[horColRow][horColColumn].equals("u")||
+         gameMap.drawMap.mapArray[horColRow][horColColumn +1].equals("i")||
+         gameMap.drawMap.mapArray[horColRow][horColColumn +1].equals("d")||
+         gameMap.drawMap.mapArray[horColRow][horColColumn +1].equals("u");
+}
 
-    public boolean isFalling(){
-        if(drawMap.mapArray[row][column].equals("e")||
-           drawMap.mapArray[row][column].equals("|")||
-           //drawMap.mapArray[row][column].equals("s")||
-           drawMap.mapArray[row][column].equals("l")||
-           drawMap.mapArray[row][column].equals("c"))
-            return true;
-
-        else return false;
+public boolean isFalling(){
+    return gameMap.drawMap.mapArray[fallRow][fallColumn].equals("e") ||
+            gameMap.drawMap.mapArray[fallRow][fallColumn].equals("|") ||
+            gameMap.drawMap.mapArray[fallRow][fallColumn].equals("l") ||
+            gameMap.drawMap.mapArray[fallRow][fallColumn].equals("c");
+}
+    public boolean isCollision(Rect foreignHitbox){return
+            hitbox.contains(foreignHitbox.left,foreignHitbox.bottom-5)||
+                    hitbox.contains(foreignHitbox.right,foreignHitbox.bottom+5);}
+    public boolean isCollision(int left, int right, int bottom){
+        return hitbox.contains(left,bottom)||hitbox.contains(right,bottom);
     }
-    public boolean isCollision(Rect foreignHitbox){return foreignHitbox.contains(hitbox);}
 
+//todo горизонтальная коллизия с коробкой, шипами, вертикальная коллизия с текстурами
 //не лезь сюда, тут всё ок
     public abstract void draw(Canvas canvas);
     public void fall(){}

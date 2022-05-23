@@ -36,6 +36,7 @@ public class DrawMap {
         if (generatedFirst) {
             try {
                 generateMapArray();
+                getObjectSpawnCoords();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -58,6 +59,7 @@ public class DrawMap {
         br.close();
         mapArray = new String[rowCounter][columnCounter];
     }
+
     //генерирует строковый массив из файла
     public void generateMapArray() throws IOException {
         checkLength();
@@ -73,9 +75,23 @@ public class DrawMap {
         }
         br.close();
     }
+    public void getObjectSpawnCoords(){
+        for (int y = 0; y < mapArray.length; y++) {
+            for (int x = 0; x < mapArray[y].length; x++) {
+                switch (mapArray[y][x]){
+                    case "s" : coordInform.put("Spike",new Pair<>(x,y-1));break;
+                    case "l" : coordInform.put("Lever",new Pair<>(x,y-1));break;
+                    case "c" : coordInform.put("Crate",new Pair<>(x,y-1));break;
+                    case "|" : coordInform.put("Roland",new Pair<>(x,y-1));break;
+                }
+            }
+        }
+    }
     public void draw(Canvas canvas) {
 //рисуем задний фон
-        canvas.drawBitmap(BitmapFactory.decodeResource(res, R.drawable.level_bg),0,0,paint);
+        canvas.drawBitmap(BitmapFactory.decodeResource(res,
+                R.drawable.level_bg),0,0,paint);
+        //рисуем текстурки
         drawTextures(canvas);
     }
     public void drawTextures(Canvas canvas) {
@@ -85,10 +101,7 @@ public class DrawMap {
                     case "i" : canvas.drawBitmap(innerBrick,x*textureWidth,y*textureHeight, paint);break;
                     case "u" : canvas.drawBitmap(upBrick,x*textureWidth,y*textureHeight, paint);break;
                     case "d" : canvas.drawBitmap(downBrick,x*textureWidth,y*textureHeight, paint);break;
-                    case "|" : coordInform.put("Roland",new Pair<>(x,y));break;
-                    case "c" : coordInform.put("Crate",new Pair<>(x,y));break;
-                    case "l" : coordInform.put("Lever",new Pair<>(x,y));break;
-                    case "s" : coordInform.put("Spike",new Pair<>(x,y));break;
+
                 }
             }
         }

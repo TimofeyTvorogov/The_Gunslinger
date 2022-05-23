@@ -27,28 +27,38 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
         drawMap = new DrawMap(res);
         for(Map.Entry<String, Pair<Integer, Integer>> entry: drawMap.coordInform.entrySet()){
             switch (entry.getKey()){
-                //todo роланд почему-то null
-                case "Roland": roland = new Roland(drawMap,res, entry.getValue().first*48,entry.getValue().second*48);break;
-                case "Lever": listOfLevers.add(new Lever(drawMap,res,entry.getValue().first*48,entry.getValue().second*48,roland)); break;
-                case "Spike": break;
-                case "Crate": listOfCrates.add(new Crate(drawMap,res,entry.getValue().first*48,entry.getValue().second*48,roland)); break;
+
+                case "Spike": listOfSpikes.add(new Spike(this,res,entry.getValue().first*48,entry.getValue().second*48));break;
+                case "Crate": listOfCrates.add(new Crate(this,res,entry.getValue().first*48,entry.getValue().second*48)); break;
+                case "Lever": listOfLevers.add(new Lever(this,res,entry.getValue().first*48,entry.getValue().second*48)); break;
+                case "Roland": roland = new Roland(this,res, entry.getValue().first*48,entry.getValue().second*48);break;
             }
         }
-        roland = new Roland(drawMap,res,10*48,11*48);
+
+
     }
     @Override
     public boolean onTouchEvent(MotionEvent event){
+
+        //todo add gestureListener, longClickListener
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 touchX = event.getX();
                 touchY = event.getY();
-                roland.setTargetX(touchX);
+                if (!roland.isJumping)
+                    roland.setTargetX(touchX);
             for (Lever lever:listOfLevers) {
-                if (lever.hitbox.contains((int)touchX, (int)touchY)) {
+                if (lever.hitbox.contains((int)touchX, (int)touchY)&&lever.isClickable) {
                     lever.changeOnOff();
                 }
+
+
+
             }
+
+
             break;
+
             case MotionEvent.ACTION_UP:
                 if (!roland.isFalling()){
                     roland.isJumping = true;
@@ -63,16 +73,21 @@ public class GameMap extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         super.draw(canvas);
         drawMap.draw(canvas);
-        roland.draw(canvas);
+
         for (Spike spike: listOfSpikes) {
             spike.draw(canvas);
+        }
+        for (Crate crate:listOfCrates){
+            if (crate.isCollision(roland.x,roland.x+roland.width-16,roland.y+roland.height/2)){
+                roland.movingVelocity = crate.movingVelocity;
+            }
+            else roland.movingVelocity = 16;
+            crate.draw(canvas);
         }
         for (Lever lever:listOfLevers) {
             lever.draw(canvas);
         }
-        for (Crate crate:listOfCrates){
-            crate.draw(canvas);
-        }
+        roland.draw(canvas);
         //crate.draw(canvas);
         //Log.d("rol cord", String.format("%d, %d, %d, %d",roland.x
         //,roland.y, roland.width, roland.height));
