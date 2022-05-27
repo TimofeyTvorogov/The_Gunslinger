@@ -13,7 +13,7 @@ public abstract class GameObject {
 
     //переменные для передвижения и взаимодействия
     Rect hitbox;
-    int fallingVelocity = 12,
+    int fallingVelocity = 9, //12
     movingVelocity,
     x, y, //координаты кадра
     height, width, //ширина и высота объекта

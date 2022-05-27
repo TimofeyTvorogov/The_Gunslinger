@@ -9,7 +9,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.util.ArrayList;
+
 public class DrawMap {
     Resources res;
     Bitmap innerBrick, upBrick, downBrick;
@@ -18,20 +19,26 @@ public class DrawMap {
     boolean generatedFirst = true;
     Paint paint = new Paint();
     //переменные для работы с файлами
-    InputStream path;
+    int path;
+    InputStream openPath;
     InputStreamReader isr;
     BufferedReader br;
     String info;
-    HashMap<String, Pair<Integer,Integer>> coordInform =new HashMap<>();
-    public DrawMap(Resources res) {
+    ArrayList<CoordClass> coordList = new ArrayList();
+    //HashMap<String, Pair<Integer,Integer>> coordInform =new HashMap<>();
+
+    public DrawMap(Resources res,int path) {
         this.res = res;
+        this.path = path;
         innerBrick = BitmapFactory.decodeResource(res, R.drawable.inner_brick_16);
         upBrick = BitmapFactory.decodeResource(res, R.drawable.up_brick_16);
         downBrick = BitmapFactory.decodeResource(res, R.drawable.down_brick_16);
         textureHeight = innerBrick.getHeight();
         textureWidth = innerBrick.getWidth();
-        path = res.openRawResource(R.raw.test_map_23_49);
-        isr = new InputStreamReader(path);
+        //todo выдлеятся память гейммапа, значит выделяется память дромап, само выдеелние раньше присваивания пути (openRaw надо делать не в конструкторе, ТАК КАК так нельзя)
+
+        openPath = res.openRawResource(path);
+        isr = new InputStreamReader(openPath);
         br = new BufferedReader(isr);
         if (generatedFirst) {
             try {
@@ -45,6 +52,7 @@ public class DrawMap {
     }
     //рассчитывает длину и высоту массива перед выделением памяти
     private void checkLength() throws IOException {
+
         int rowCounter = 0;
         int columnCounter = 0;
         boolean hasTaken = false;
@@ -63,8 +71,8 @@ public class DrawMap {
     //генерирует строковый массив из файла
     public void generateMapArray() throws IOException {
         checkLength();
-        path = res.openRawResource(R.raw.test_map_23_49);
-        isr = new InputStreamReader(path);
+        openPath = res.openRawResource(path);
+        isr = new InputStreamReader(openPath);
         br = new BufferedReader(isr);
         int i = 0;
         while ((info = br.readLine()) != null) {
@@ -79,10 +87,14 @@ public class DrawMap {
         for (int y = 0; y < mapArray.length; y++) {
             for (int x = 0; x < mapArray[y].length; x++) {
                 switch (mapArray[y][x]){
-                    case "s" : coordInform.put("Spike",new Pair<>(x,y-1));break;
-                    case "l" : coordInform.put("Lever",new Pair<>(x,y-1));break;
-                    case "c" : coordInform.put("Crate",new Pair<>(x,y-1));break;
-                    case "|" : coordInform.put("Roland",new Pair<>(x,y-1));break;
+                    //case "s" : coordInform.put("Spike",new Pair<>(x,y-1));break;
+                    //case "l" : coordInform.put("Lever",new Pair<>(x,y-1));break;
+                    //case "c" : coordInform.put("Crate",new Pair<>(x,y-1));break;
+                    //case "|" : coordInform.put("Roland",new Pair<>(x,y-1));break;
+                    case "s" : coordList.add(new CoordClass("Spike",new Pair(x,y)));break;
+                    case "l" :  coordList.add(new CoordClass("Lever",new Pair(x,y-1)));break;
+                    case "c" :  coordList.add(new CoordClass("Crate",new Pair(x-1,y-1)));break;
+                    case "|" :  coordList.add(new CoordClass("Roland",new Pair(x,y-1)));break;
                 }
             }
         }

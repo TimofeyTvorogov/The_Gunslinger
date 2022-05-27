@@ -19,11 +19,11 @@ public class Lever extends GameObject {
         imageMap.put("L0",BitmapFactory.decodeResource(res,R.drawable.lever_l0_32) );
         imageMap.put("L1",BitmapFactory.decodeResource(res,R.drawable.lever_l1_32) );
         imageMap.put("R1",BitmapFactory.decodeResource(res, R.drawable.lever_r1_32) );
-        imageMap.put("R0",BitmapFactory.decodeResource(res,R.drawable.lever_r0_32) );
+        imageMap.put("R0",BitmapFactory.decodeResource(res, R.drawable.lever_r0_32) );
         currentImage = imageMap.get("L0");
         width = currentImage.getWidth();
         height = currentImage.getHeight();
-        hitbox = new Rect(x,y+12,x+width,y+height);
+        hitbox = new Rect(x,y,x+width,y+height);
     }
 
 

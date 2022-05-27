@@ -36,21 +36,24 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@null"
-            android:src="@drawable/wheel_settings_button_notouch_export"/>
+            android:src="@drawable/wheel_settings_button_notouch_export"
+            android:id="@+id/four"/>
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@null"
-            android:src="@drawable/wheel_settings_button_notouch_export" />
+            android:src="@drawable/wheel_settings_button_notouch_export"
+            android:id="@+id/five"/>
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@null"
-            android:src="@drawable/wheel_settings_button_notouch_export" />
+            android:src="@drawable/wheel_settings_button_notouch_export"
+            android:id="@+id/six"/>
 
     </LinearLayout>
 
@@ -69,21 +72,23 @@
             android:layout_margin="10dp"
             android:background="@null"
             android:src="@drawable/level_one"
-            android:id="@+id/button_level_first"/>
+            android:id="@+id/one" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@null"
-            android:src="@drawable/wheel_settings_button_notouch_export" />
+            android:src="@drawable/wheel_settings_button_notouch_export"
+            android:id="@+id/two"/>
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@null"
-            android:src="@drawable/wheel_settings_button_notouch_export" />
+            android:src="@drawable/wheel_settings_button_notouch_export"
+            android:id="@+id/three"/>
         
     </LinearLayout>
 
